@@ -50,13 +50,18 @@
       <table>
         <tr>
           <th>City Name</th>
-          <th *ngFor="let weatherDay of weather.data.hourly">{{ weatherDay.datetime | date:'shortTime' }}</th>
+          <div *ngFor="let weatherDay of weather.data.hourly.length; let i = index">
+            
+            <th *ngIf="i%3==0 || i==0">
+            {{ weatherDay.datetime | date:'shortTime' }}</th>
+           
+          </div>
     
         </tr>
         <ng-container >
         <tr >
           <td>{{ weather.data.city}}</td>
-          <td *ngFor="let weatherDay of weather.data.hourly">{{ weatherDay.temp | number: '1.0-0' }} °C</td>
+          <td *ngFor="let weatherDay of weather.data.hourly; let i = index">{{ weatherDay.temp | number: '1.0-0' }} °C</td>
     
         </tr>
       </ng-container>
