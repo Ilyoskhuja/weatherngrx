@@ -1,0 +1,59 @@
+<div class="goHome">
+  <a routerLink="">Home</a>
+</div>
+
+<div *ngIf="weather$ | async as weather">
+  <div *ngIf="!weather.loading; else loadingText">
+    <div class="details">
+      <h3>City: {{ weather.data.city }}</h3>
+      <p><b>Timezone:</b> {{ weather.data.timezone }}</p>
+    </div>
+
+    <hr noshade size="1px" color="black" >
+
+    <h2>Current weather:</h2>
+    <div class="weatherItem">
+      <i class="{{ weather.data.current.icon }}"></i>
+      <h3 class="weatherState"><u>{{ weather.data.current.datetime | date:'HH:mm:ss' }}</u> | {{ weather.data.current.desc }} </h3>
+      <p><b>Temperature:</b> {{ weather.data.current.temp | number: '1.0-0' }} °C</p>
+      <p><b>Humidity:</b> {{ weather.data.current.humidity }}%</p>
+      <p><b>Pressure:</b> {{ weather.data.current.pressure }} hPa</p>
+      <p><b>UV index:</b> {{ weather.data.current.uvi | number: '1.0-1' }}</p>
+    </div>
+
+    <hr noshade size="1px" color="black" >
+
+    <h2>Daily weather:</h2>
+
+    <div class="daily">
+      <ng-container *ngFor="let weatherDay of weather.data.daily">
+        <div class="weatherDailyItem">
+          <i class="{{ weatherDay.icon }}"></i>
+          <h3 class="weatherState"><u>{{ weatherDay.datetime | date:'MMM d' }}</u><br>{{ weatherDay.desc }}</h3>
+          <p><b>Temperature:</b><br>{{ weatherDay.temp | number: '1.0-0' }} °C</p>
+          <p><b>Humidity:</b><br>{{ weatherDay.humidity }}%</p>
+          <p><b>Pressure:</b><br>{{ weatherDay.pressure }} hPa</p>
+          <p><b>UV index:</b><br>{{ weatherDay.uvi | number: '1.0-1' }}</p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingText>
+  <h3 class="loading">
+    Loading...
+  </h3>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
