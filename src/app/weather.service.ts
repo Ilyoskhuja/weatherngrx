@@ -8,7 +8,6 @@ export interface CityWeather {
   timezone: string,
   current: {
     desc: string,
-    icon: string,
     datetime: Date,
     temp: number,
     pressure: number,
@@ -18,7 +17,16 @@ export interface CityWeather {
   },
   daily: {
     desc: string,
-    icon: string,
+    datetime: Date,
+    temp: number,
+    pressure: number,
+    humidity: number,
+    uvi: number,
+    clouds: number
+  }[],
+  
+  hourly: {
+    desc: string,
     datetime: Date,
     temp: number,
     pressure: number,
@@ -41,8 +49,8 @@ export class WeatherService {
   private EXCLUDE = 'minutely,hourly,alerts';
   private UNITS = 'metric';
 
-  private CITIES = ['Kyiv', 'Kharkiv', 'Odesa', 'Dnipro', 'Donetsk', 'Zaporizhzhia', 'Lviv', 'Kryvyy Rih', 'Mykolaiv', 'Sevastopol', 'Luhansk', 'Vinnytsia', 'Simferopol', 'Poltava', 'Chernihiv', 'Kherson', 'Cherkasy', 'Khmelnytskyi', 'Zhytomyr', 'Chernivtsi', 'Sumy', 'Rivne', 'Ivano-Frankivsk', 'Kropyvnytskyi', 'Ternopil', 'Lutsk'];
 
+  
   getCoordinates(query: string) {
     const params = new HttpParams()
       .set('q', query)
@@ -51,9 +59,11 @@ export class WeatherService {
     return this.http.get(this.GEOCODING_URL, {params});
   }
 
-  getWeatherData(city: string) {
+  getWeatherData(city: string, searchType:string) {
     let correctCity: string;
-
+    this.EXCLUDE=searchType;
+    console.log("this.EXCLUDE:",this.EXCLUDE);
+    
     return this.getCoordinates(city)
       .pipe(
         map(data => {
@@ -64,7 +74,7 @@ export class WeatherService {
           correctCity = data[0]["name"];
           let lat: string = data[0]["lat"];
           let lon: string = data[0]["lon"];
-          return [city, lat, lon];
+          return [city, lat, lon ];
         }),
         map(coordinates => {
           return new HttpParams()
@@ -84,7 +94,6 @@ export class WeatherService {
                   timezone: data['timezone'],
                   current: {
                     desc: data['current']['weather'][0]['main'],
-                    icon: this.getWeatherIcon(data['current']['weather'][0]['icon']),
                     datetime: new Date(data['current']['dt'] * 1000),
                     temp: data['current']['temp'],
                     pressure: data['current']['pressure'],
@@ -92,13 +101,18 @@ export class WeatherService {
                     uvi: data['current']['uvi'],
                     clouds: data['current']['clouds']
                   },
-                  daily: []
+                  daily: [],
+                  hourly:[]
                 }
-                for (let dayWeather in data['daily']) {
-                  let dayWeatherItem = data['daily'][dayWeather]
+                if(data['daily']!=undefined)
+                for (let i=0; i < data['daily'].length-1;i++) {
+                  console.log("i service:",i);
+                  console.log("data['daily'].length:",data['daily'].length);
+                  
+                  let dayWeatherItem = data['daily'][i]
                   let formattedDayWeatherItem = {
                     desc: dayWeatherItem['weather'][0]['main'],
-                    icon: this.getWeatherIcon(dayWeatherItem['weather'][0]['icon']),
+                  
                     datetime: new Date(dayWeatherItem['dt'] * 1000),
                     temp: dayWeatherItem['temp']['day'],
                     pressure: dayWeatherItem['pressure'],
@@ -108,6 +122,24 @@ export class WeatherService {
                   }
                   cityWeather['daily'].push(formattedDayWeatherItem);
                 }
+                if(data['hourly']!=undefined)
+                for (let i=0; i < data['hourly'].length-1;i++) {
+                  console.log("i service:",i);
+                  console.log("data['hourly'].length:",data['hourly'].length);
+                  
+                  let dayWeatherItem = data['hourly'][i]
+                  let formattedDayWeatherItem = {
+                    desc: dayWeatherItem['weather'][0]['main'],
+                  
+                    datetime: new Date(dayWeatherItem['dt'] * 1000),
+                    temp: dayWeatherItem['temp'],
+                    pressure: dayWeatherItem['pressure'],
+                    humidity: dayWeatherItem['humidity'],
+                    uvi: dayWeatherItem['uvi'],
+                    clouds: dayWeatherItem['clouds']
+                  }
+                  cityWeather['hourly'].push(formattedDayWeatherItem);
+                }
                 return cityWeather;
               })
             );
@@ -115,25 +147,6 @@ export class WeatherService {
       )
   }
 
-  getWeatherIcon(code: string) {
-    if (code == '11d' || code == '11n') {
-      return 'fas fa-bolt'
-    } else if (code == '09d' || code == '10d' || code == '13d' || code == '09n' || code == '10n' || code == '13n') {
-      return 'fas fa-cloud-rain'
-    } else if (code == '13d' || code == '13n') {
-      return 'far fa-snowflake'
-    } else if (code == '50d' || code == '50n') {
-      return 'fas fa-smog'
-    } else if (code == '01d' || code == '01n') {
-      return 'fas fa-sun'
-    } else if (code == '02d' || code == '02n' || code == '03d' || code == '03n' || code == '04d' || code == '04n') {
-      return 'fas fa-cloud'
-    } else {
-      return 'fas fa-sun'
-    }
-  }
 
-  get getCities() {
-    return this.CITIES;
-  }
-}
+
+ }

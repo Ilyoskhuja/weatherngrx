@@ -17,7 +17,6 @@ export const initialState: WeatherState = {
       timezone: "",
       current: {
         desc: "",
-        icon: "",
         datetime: new Date(),
         temp: 0,
         pressure: 0,
@@ -27,9 +26,17 @@ export const initialState: WeatherState = {
       },
       daily: [{
         desc: "",
-        icon: "",
         datetime: new Date(),
         temp: 0,
+        pressure: 0,
+        humidity: 0,
+        uvi: 0,
+        clouds: 0
+      }],
+      hourly: [{
+        desc: "",
+        datetime: new Date(),
+        temp: 0.0,
         pressure: 0,
         humidity: 0,
         uvi: 0,
@@ -44,11 +51,12 @@ export const weatherReducer = (state: WeatherState = initialState, action: Weath
             return {
               ...state,
               loading: true,
-              query: action.payload
+              query:action.payload,
+              searchType:action.hd
             };
         case weatherActionsType.getWeatherSuccess:
             return {
-              ...action.payload
+              ...action.payload,
             };
         default:
             return state;

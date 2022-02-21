@@ -8,7 +8,7 @@ export enum weatherActionsType {
 
 export class GetWeatherAction implements Action {
     readonly type = weatherActionsType.getWeather;
-    constructor(public payload: string) {}
+    constructor(public payload: string, public hd:string) {}
 }
 
 export class GetWeatherSuccessAction implements Action {

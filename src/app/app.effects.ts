@@ -9,14 +9,16 @@ import { map, mergeMap } from 'rxjs/operators'
 export class AppEffects {
   constructor(private actions$: Actions, private weatherService: WeatherService) {}
   searchQuery: string;
+  searchType:string;
   updatedAt$: Observable<WeatherActions> = createEffect(() => {
     return this.actions$.pipe(
       ofType(weatherActionsType.getWeather),
       map((action: GetWeatherAction) => {
         this.searchQuery = action.payload;
+        this.searchType =action.hd;
         return this.searchQuery;
       }),
-      mergeMap(searchQuery => this.weatherService.getWeatherData(searchQuery)),
+      mergeMap(searchQuery =>this.weatherService.getWeatherData(searchQuery,this.searchType)),
       map(data => {
         return new GetWeatherSuccessAction({
           loading: false,

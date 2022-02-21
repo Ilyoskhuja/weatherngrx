@@ -6,6 +6,7 @@ import { WeatherState } from '../reducers/weather/weather.reducer';
 import { GetWeatherAction } from '../reducers/weather/weather.actions';
 import { selectWeatherState } from '../reducers/weather/weather.selector';
 import { tap } from 'rxjs/operators';
+import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'app-city',
@@ -17,23 +18,41 @@ export class CityComponent implements OnInit {
   private city: string;
   private subscription: Subscription;
   loading = true;
+  cities: string[];
+  query: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private store$: Store<WeatherState>) {
+  selectedHD:string="daily";
+  constructor(private activatedRoute: ActivatedRoute, private weatherService: WeatherService,private store$: Store<WeatherState>) {
     this.subscription = activatedRoute.params.subscribe(params => this.city = params['city']);
+    
+    
   }
 
   public weather$: Observable<WeatherState> = this.store$.pipe(
     select(selectWeatherState),
     tap(v => {
-      console.log(v)
+      console.log("weather$:",v)
     })
   );
 
   ngOnInit(): void {
-    this.store$.dispatch(new GetWeatherAction(this.city));
   }
 
   getIconUrl(code: string) {
     return `http://openweathermap.org/img/wn/${code}@2x.png`
+  }
+  search() {
+    this.store$.dispatch(new GetWeatherAction(this.query,this.selectedHD));
+
+  }
+  onChange(hd) {
+    console.log("hd:",hd);
+    if(hd=='hourly')
+    this.selectedHD="daily";
+    else
+    this.selectedHD="hourly";
+    
+    console.log("selectedHD:",this.selectedHD);
+    
   }
 }

@@ -58,3 +58,124 @@ h2 {
     margin: 30px;
     flex: 1 0 12.5%;
 }
+input {
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    height: 40px;
+    font-size: 25px;
+    margin-bottom: 20px;
+    outline: none;
+    border: 1px solid black;
+    transition: all .2s;
+
+    &::placeholder {
+        color: black;
+    }
+
+    &:focus {
+        background: black;
+        color: white;
+
+        &::placeholder {
+            color: white;
+        }
+    }
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    width: 407px;
+    height: 42px;
+    font-size: 25px;
+    margin-bottom: 20px;
+    background: transparent;
+    color: black;
+    border: 1px solid black;
+    transition: all .2s;
+    outline: none;
+
+    &:hover {
+        color: white;
+        background: black;
+        border: 1px solid black;
+    }
+
+    &:disabled, &[disabled] {
+        opacity: .5;
+        
+        &:hover {
+            opacity: .5;
+            background: transparent;
+            color: black;
+            border: 1px solid black;
+        }
+    }
+}
+
+ul {
+    display: block;
+    text-align: center;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+    li a {
+        color: black;
+        text-decoration: none;
+    }
+        
+    li a:hover {
+        text-decoration: underline;
+    }
+}
+.searchFilter{
+    display: flex;
+    justify-content: center;
+}
+.searchInput{
+    border-radius: 25px;
+}
+.searchButton{
+    border-radius: 15px;
+    width:200px;
+}
+select{
+    height: 25px;
+    margin-top: 10px;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+  input{
+    width: 250px;
+    font-size: 18px;
+  }
+  .searchButton{
+    width: 250px;
+  }
+  select{
+    width: 100px;
+    height: 25px;
+    margin-top: 10px;
+  }
+  option{
+    margin-top: 20px !important;
+  }
+  button{
+    font-size: 18px;
+  }
