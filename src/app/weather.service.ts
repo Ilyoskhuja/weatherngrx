@@ -61,7 +61,7 @@ export class WeatherService {
 
   getWeatherData(city: string, searchType:string) {
     let correctCity: string;
-    this.EXCLUDE=searchType;
+    this.EXCLUDE = searchType + "," + 'minutely';
     console.log("this.EXCLUDE:",this.EXCLUDE);
     
     return this.getCoordinates(city)

@@ -1,12 +1,13 @@
 
 <div class="searchFilter">
 <input class="searchInput" name="searchQuery" placeholder="Enter city name..." [(ngModel)]="query" (keyDown.enter)="search()">
+<div class="select">
 <select  (change)="onChange($event.target.value)">
   <option value="hourly">hourly</option>
   <option  value="daily">daily</option>
 </select>
-
-<button class="searchButton" [disabled]="!query"  (click)="search()">Show weather</button>
+</div>
+<button class="searchButton" [disabled]="!query"  (click)="search()">Search</button>
 </div>
 <div class="goHome">
   <a routerLink="">Home</a>
@@ -21,19 +22,18 @@
 
   
 
-    <h2>Daily weather:</h2>
+    <h2 *ngIf="selectedHD!='daily'">Daily weather:</h2>
+
+    <h2 *ngIf="selectedHD!='hourly'">Hourly weather:</h2>
 
     <div *ngIf="selectedHD!='daily'" class="daily">
       <table>
         <tr>
           <th>City Name</th>
-          <th>Mo</th>
-          <th>Tu</th>
-          <th>We</th>
-          <th>Th</th>
-          <th>Fr</th>
-          <th>Sa</th>
-          <th>Su</th>
+          <ng-container *ngFor="let weatherDay of weather.data.daily; index as i">
+          <th>{{weatherDay.datetime | date:'EEEE'}}</th>
+          </ng-container>
+        
         </tr>
         <ng-container >
         <tr >
@@ -50,19 +50,20 @@
       <table>
         <tr>
           <th>City Name</th>
-          <div *ngFor="let weatherDay of weather.data.hourly.length; let i = index">
+          <ng-container *ngFor="let weatherDay of weather.data.hourly; index as i">
             
-            <th *ngIf="i%3==0 || i==0">
+            <th *ngIf="(i%3==0 || i==0)&&i<=24">
             {{ weatherDay.datetime | date:'shortTime' }}</th>
            
-          </div>
+          </ng-container>
     
         </tr>
         <ng-container >
-        <tr >
+        <tr>
           <td>{{ weather.data.city}}</td>
-          <td *ngFor="let weatherDay of weather.data.hourly; let i = index">{{ weatherDay.temp | number: '1.0-0' }} °C</td>
-    
+          <ng-container *ngFor="let weatherDay of weather.data.hourly; index as i">
+          <td *ngIf="(i%3==0 || i==0)&&i<=24">{{ weatherDay.temp | number: '1.0-0' }} °C</td>
+          </ng-container>
         </tr>
       </ng-container>
     

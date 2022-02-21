@@ -5,7 +5,7 @@ import { select, Store } from '@ngrx/store';
 import { WeatherState } from '../reducers/weather/weather.reducer';
 import { GetWeatherAction } from '../reducers/weather/weather.actions';
 import { selectWeatherState } from '../reducers/weather/weather.selector';
-import { tap } from 'rxjs/operators';
+import { tap,map } from 'rxjs/operators';
 import { WeatherService } from '../weather.service';
 
 @Component({
@@ -31,7 +31,8 @@ export class CityComponent implements OnInit {
   public weather$: Observable<WeatherState> = this.store$.pipe(
     select(selectWeatherState),
     tap(v => {
-      console.log("weather$:",v)
+      console.log("weather$:", v)
+      
     })
   );
 
@@ -46,13 +47,11 @@ export class CityComponent implements OnInit {
 
   }
   onChange(hd) {
-    console.log("hd:",hd);
     if(hd=='hourly')
     this.selectedHD="daily";
     else
     this.selectedHD="hourly";
-    
-    console.log("selectedHD:",this.selectedHD);
+    this.search();
     
   }
 }
