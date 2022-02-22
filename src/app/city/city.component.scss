@@ -26,7 +26,12 @@ h2 {
 }
 
 .details {
-    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    font-size: 25px;
+}
+.details p{
+    font-family: 'Commissioner', sans-serif;
 }
 
 .weatherState {
@@ -61,8 +66,8 @@ h2 {
 input {
     text-align: center;
     display: block;
-    margin: 0 auto;
-    width: 400px;
+    margin: 0;
+    // width: 400px;
     height: 40px;
     font-size: 25px;
     margin-bottom: 20px;
@@ -133,10 +138,12 @@ ul {
 }
 .searchFilter{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 .searchInput{
-    border-radius: 25px;
+    border-radius: 5px;
+    height: 36px;
+    margin: 0  3px 0 0;
 }
 
 .custom-select {
@@ -147,21 +154,24 @@ ul {
 .custom-select select {
   display: none; /*hide original SELECT element:*/
 }
-table {
+.table {
     font-family: arial, sans-serif;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 4px;
     width: 100%;
+    color: #212529;
   }
-  
+  th{
+      border-bottom: 0.5px solid #212529;
+  }
+
   td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
+    // border: 0.1px solid #000000;
+    text-align: center;
     padding: 8px;
+    background-color: #e5f5f7;
   }
   
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
   input{
     width: 250px;
     font-size: 18px;
@@ -186,15 +196,17 @@ select {
    appearance:none;
    outline:0;
    box-shadow:none;
-   border:0!important;
-   background: #5c6664;
+   background: #f9fcfb;
    background-image: none;
    flex: 1;
    padding: 0 .5em;
-   color:#fff;
+   color:rgb(7, 7, 7);
    cursor:pointer;
    font-size: 1em;
    font-family: 'Open Sans', sans-serif;
+   border: 1px solid black;
+   
+   border-radius: 5px;
 }
 select::-ms-expand {
    display: none;
@@ -205,9 +217,9 @@ select::-ms-expand {
    width: 7em;
    height: 2.5em;
    line-height: 3;
-   background: #b8d8d8;
+   background: white;
    overflow: hidden;
-   border-radius: .25em;
+   border-radius: 5px;
 }
 .select::after {
    content: '\25BC';
@@ -215,7 +227,7 @@ select::-ms-expand {
    top: 0;
    right: 0;
    padding: 0 .4em;
-   background: #b8d8d8;
+   background-color: rgba(255, 255, 255, 0);
    cursor:pointer;
    pointer-events:none;
    transition:.25s all ease;
